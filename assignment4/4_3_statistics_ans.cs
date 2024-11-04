@@ -23,9 +23,10 @@ namespace statistics
              double mathMax = 0, mathMin = 0, scienceMax = 0, scienceMin = 0, englishMax = 0, englishMin = 0;
 
             double[] totalScores = new double[stdCount];
+            double[] students = new double[stdCount];
             string[] names = new string[stdCount];
             double mathScore = 0;
-            
+            Console.WriteLine("Average scores: ");
             for (int i = 1; i <= 5; i++)
             {
                 names[i - 1] = data[i, 1];
@@ -38,6 +39,7 @@ namespace statistics
                 {
                     mathMin = double.Parse(data[i,2]);
                 }
+                students[i - 1] += double.Parse(data[i,2]);
                 
             }
             mathScore /= 5;
@@ -55,10 +57,10 @@ namespace statistics
                 {
                     scienceMin = double.Parse(data[i,3]);
                 }
-                
+                students[i - 1] += double.Parse(data[i,3]);
             }
             scienceScore /= 5;
-            Console.WriteLine("Math: " + scienceScore);
+            Console.WriteLine("Science: " + scienceScore);
 
             double englishScore = 0;
             for (int i = 1; i <= 5; i++)
@@ -72,31 +74,47 @@ namespace statistics
                 {
                     englishMin = double.Parse(data[i,4]);
                 }
-                
+                students[i - 1] += double.Parse(data[i,4]);
             }
             englishScore /= 5;
+            Console.WriteLine("English: " + englishScore);
 
-            
-
-            Console.WriteLine("Average scores: ");
-            Console.WriteLine("Math: " + englishScore);
-
-            // 돌아가면 된다는 마인드
-            Console.WriteLine("Max and min scores: ");
+            Console.WriteLine("\nMax and min scores: ");
             Console.WriteLine("Math: (" + mathMax + ", " + mathMin + ")");
             Console.WriteLine("Science: (" + scienceMax + ", " + scienceMin + ")");
             Console.WriteLine("English: (" + englishMax + ", " + englishMin + ")");
             
-            var rankedStudents = totalScores
-                .Select((score, index) => new { Name = names[index], TotalScore = score })
-                .OrderByDescending(student => student.TotalScore)
-                .Select((student, rank) => new { student.Name, student.TotalScore, Rank = rank + 1 });
-
+            
             Console.WriteLine("\nStudents rank by total scores:");
-            foreach (var student in rankedStudents)
-            {
-                Console.WriteLine($"{student.Name}: {student.Rank}th");
+            string[] studentnames = {"Alice", "Bob", "Charlie", "David", "Eve"};
+
+            for(int i = 0; i < students.Length; i++){
+                int j = 1;
+                for(int k = 0; k < students.Length; k++){
+                    if (students[k] > students[i])
+                    {
+                        j++;
+                    }
+                }
+                if (j == 1)
+                {
+                    Console.WriteLine(studentnames[i] + ": " + j + "st");
+                }
+                else if (j == 2)
+                {
+                    Console.WriteLine(studentnames[i] + ": " + j + "nd");
+                }
+                else if (j == 3)
+                {
+                    Console.WriteLine(studentnames[i] + ": " + j + "rd");
+                }
+                else
+                {
+                    Console.WriteLine(studentnames[i] + ": " + j + "th");
+                }
+
             }
+
             // --------------------
         }
     }
